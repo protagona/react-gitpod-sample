@@ -7,3 +7,6 @@
 # nodejs 18.4.0
 # golang 1.18.4
 # jq 1.6
+nodejs 18.4.0
+awscli 2.7.31
+python 3.9.13
