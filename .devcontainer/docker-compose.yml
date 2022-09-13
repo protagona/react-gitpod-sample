@@ -1,0 +1,55 @@
+services:
+  devcontainer:
+    privileged: true
+    network_mode: host
+    image: gitpod-sample-devcontainer
+    environment:
+      USER: $USER
+    volumes:
+      - ../.git:/root/workspace/.git
+      - ../:/root/workspace
+      - workspace:/root/workspace
+
+      # Add your AWS config for access within the dev container
+      - $HOME/.aws:/root/.aws
+
+      # Add your SSH key pairs so that git and other SSH services work
+      - $HOME/.ssh:/root/.ssh
+
+      # vscode extensions
+      - vscode:/root/.vscode-server/extensions
+
+      # persist docker resources - i.e. images, volumes, etc...
+      - docker:/var/lib/docker
+
+      # shell history
+      - commandhistory:/commandhistory
+
+      # asdf tools
+      - asdf:/root/.asdf
+
+volumes:
+  workspace:
+  asdf:
+    name: asdf-shared
+  commandhistory:
+    name: commandhistory-shared
+  docker:
+    name: docker-shared
+  vscode:
+    name: vscode-shared
+
+x-mutagen:
+  sync:
+    defaults:
+      ignore:
+        vcs: true
+        paths:
+          - node_modules
+          - .venv
+          - .pytest_cache
+          - __pycache__
+          - .docker_cache
+    workspace:
+      alpha: "../"
+      beta: "volume://workspace"

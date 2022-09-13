@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# DO NOT RUN THIS DIRECTLY
+# Run from the Makefile with `make enter-devcontainer`
+
+set -e
+
+docker stats --no-stream
+
+set -x
+curr_dir=$(pwd)
+"$curr_dir/bin/build-devcontainer"
+cd ../
+curr_dir=$(pwd)
+docker run -v "$(pwd)/.tool-versions":"/root/workspace/.tool-versions" -v "$(pwd)/.devcontainer/resources":/resources --network host --privileged --rm -it gitpod-sample-devcontainer /bin/zsh

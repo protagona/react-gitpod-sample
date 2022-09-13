@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# DO NOT RUN THIS DIRECTLY
+# Run from the Makefile with `make install-test-requirements`
+
+set -e
+
+set -x
+curr_dir=$(readlink -f $(pwd))
+set +x
+
+if [[ ! -d "$curr_dir/.venv" ]]; then
+  rm -rf "$curr_dir/.venv"
+  python -m venv "$curr_dir/.venv"
+  source .venv/bin/activate
+  pip install pip --upgrade
+  pip install -r "$curr_dir/test-requirements.txt"
+fi

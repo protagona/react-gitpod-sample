@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Use this template to add a new script to the Dockerfile
+
+# ----REQUIRED-----
+# equivalent to true in bash to prevent shellcheck from applying the directive to the entire file
+:
+# shellcheck disable=SC1091
+source "$HOME/.bashrc"
+# ----REQUIRED-----
+
+# OPTIONAL: Use this if you want a script to fail if any commands fail
+# When off, a script only fails based on the execution of the last command
+set -e
+
+# Turn off with
+# set +e
+
+# OPTIONAL: Use this if you want to see debug output for all commands (and their commands)
+set -x
+
+# Turn off with
+# set +x
+
+### Add script here

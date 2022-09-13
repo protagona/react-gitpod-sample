@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# DO NOT RUN THIS DIRECTLY
+# Run from the Makefile with `make test-devcontainer`
+
+curr_dir=$(pwd)
+
+source .venv/bin/activate
+pytest -s devcontainer_tests

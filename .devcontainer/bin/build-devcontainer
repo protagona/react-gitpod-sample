@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# DO NOT RUN THIS DIRECTLY
+# Run from the Makefile with `make build-devcontainer`
+
+curr_dir=$(readlink -f $(pwd))
+
+set -e
+
+# ensure docker engine is running
+docker stats --no-stream
+
+# option to target docker build stages for debugging
+target=$TARGET_STAGE
+if [[ ! -z $target ]]; then
+  target_opt="--target $target"
+fi
+
+# ensure docker buildkit is used
+DOCKER_BUILDKIT=1
+time docker build \
+  --network=host \
+  --file "$curr_dir/Dockerfile" \
+  --progress=plain \
+  --tag gitpod-sample-devcontainer \
+  $target_opt \
+  $BUILD_ARGS \
+  "$curr_dir/.."

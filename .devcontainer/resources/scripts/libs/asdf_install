@@ -1,0 +1,31 @@
+#!/bin/bash
+
+set -e
+
+# shellcheck disable=SC1091
+source "$HOME/.bashrc"
+
+tool_versions_dir=${ASDF_TOOLS_VERSIONS_DIR:-$HOME}
+tool_versions_path="$tool_versions_dir/.tool-versions"
+
+if [[ -f "$tool_versions_path" ]]; then
+  # add asdf plugins
+  while IFS= read -r line; do
+    read -r -a requirement <<< "$line"
+    plugin="$(echo -e "${requirement[0]}" | tr -d '[:space:]')"
+    if [[ -n $plugin ]] && [[ $plugin != '#'* ]]; then
+      echo "adding asdf plugin $plugin"
+
+      # ignore error for already existing plugins
+      asdf plugin add "$plugin" || true
+      has_plugins=1
+    fi
+  done < "$tool_versions_path"
+
+  if [[ -n $has_plugins ]]; then
+    # install tools
+    cd "$tool_versions_dir"
+    asdf install
+    asdf reshim
+  fi
+fi

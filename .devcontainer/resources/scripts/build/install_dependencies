@@ -1,0 +1,36 @@
+#!/bin/bash
+
+yum update -y && yum install -y \
+    kernel \
+    util-linux \
+    iptables \
+    iptables-nft \
+    nftables \
+    sudo \
+    zip \
+    findutils \
+    tar \
+    patch \
+    make \
+    git \
+    openssl \
+    zsh \
+    python3 \
+    jq \
+    procps  \
+    man \
+    gcc \
+    g++ \
+    zlib-devel \
+    bzip2 \
+    bzip2-devel \
+    readline-devel \
+    sqlite \
+    sqlite-devel \
+    openssl-devel \
+    tk-devel \
+    libffi-devel \
+    xz \
+    xz-devel \
+    python-devel \
+    python3-devel

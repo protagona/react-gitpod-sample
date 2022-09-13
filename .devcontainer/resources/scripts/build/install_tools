@@ -1,0 +1,5 @@
+#!/bin/bash
+:
+# shellcheck disable=SC1091
+
+"$RESOURCES_PATH/scripts/libs/asdf_install"

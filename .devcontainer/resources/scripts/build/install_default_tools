@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# shellcheck disable=SC1091
+source "$HOME/.bashrc"
+
+set -e
+
+asdf plugin add awscli || true
+asdf install awscli 2.7.15
+asdf global awscli 2.7.15
+
+asdf plugin add direnv || true
+asdf install direnv 2.32.1
+asdf global direnv 2.32.1

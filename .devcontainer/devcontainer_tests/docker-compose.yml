@@ -1,0 +1,12 @@
+version: "3.8"
+services:
+  devcontainer:
+    image: gitpod-sample-devcontainer
+    privileged: true
+    network_mode: host
+    volumes:
+      - .tool-versions:/root/workspace/.tool-versions
+      - asdf_tests:/root/.asdf
+
+volumes:
+  asdf_tests:

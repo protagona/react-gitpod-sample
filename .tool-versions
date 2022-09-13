@@ -1,0 +1,9 @@
+# add your plugins here AND remove these comments
+# asdf configuration docs @ https://asdf-vm.com/manage/configuration.html#tool-versions
+# asdf plugins @ https://github.com/asdf-vm/asdf
+# python 3.7.13
+# awscli 2.7.4
+# direnv 2.31.0
+# nodejs 18.4.0
+# golang 1.18.4
+# jq 1.6

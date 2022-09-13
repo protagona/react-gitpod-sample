@@ -1,0 +1,80 @@
+#!/bin/bash
+
+# DO NOT RUN THIS DIRECTLY
+# Run from the Makefile with `make install-requirements`
+
+set -e
+
+set -x
+curr_dir=$(readlink -f $(pwd))
+system=$(uname -s)
+set +x
+
+. "$curr_dir/bin/libs/utils.sh"
+
+if [[ ! -x "$(command -v docker)" ]]; then
+  echo "Docker installation was not detected. Please install and start Docker."
+  echo "Official Docker install https://docs.docker.com/get-docker/"
+  echo "Homebrew Docker install https://formulae.brew.sh/cask/docker"
+  exit 1
+fi
+docker version
+
+if [[ ! -x "$(command -v mutagen)" ]]; then
+  # install mutagen
+  mutagen_download_url=$(select_by_platform \
+  mutagen \
+  https://github.com/mutagen-io/mutagen/releases/download/v0.15.0/mutagen_darwin_amd64_v0.15.0.tar.gz \
+  https://github.com/mutagen-io/mutagen/releases/download/v0.15.0/mutagen_darwin_arm64_v0.15.0.tar.gz \
+  https://github.com/mutagen-io/mutagen/releases/download/v0.15.0/mutagen_linux_amd64_v0.15.0.tar.gz \
+  https://github.com/mutagen-io/mutagen/releases/download/v0.15.0/mutagen_linux_arm64_v0.15.0.tar.gz
+  )
+  rm -rf /tmp/mutagen
+  mkdir -p /tmp/mutagen
+  curl -sL $mutagen_download_url | tar xvz -C "/tmp/mutagen"
+  sudo mv /tmp/mutagen/mutagen /usr/local/bin/mutagen
+  rm -rf /tmp/mutagen
+fi
+
+if [[ ! -x "$(command -v mutagen-compose)" ]]; then
+  # install mutagen-compose
+  mutagen_compose_download_url=$(select_by_platform \
+  mutagen-compose \
+  https://github.com/mutagen-io/mutagen-compose/releases/download/v0.15.0-1/mutagen-compose_darwin_amd64_v0.15.0.tar.gz \
+  https://github.com/mutagen-io/mutagen-compose/releases/download/v0.15.0-1/mutagen-compose_darwin_arm64_v0.15.0.tar.gz \
+  https://github.com/mutagen-io/mutagen-compose/releases/download/v0.15.0-1/mutagen-compose_linux_amd64_v0.15.0.tar.gz \
+  https://github.com/mutagen-io/mutagen-compose/releases/download/v0.15.0-1/mutagen-compose_linux_arm64_v0.15.0.tar.gz
+  )
+  rm -rf /tmp/mutagen-compose
+  mkdir -p /tmp/mutagen-compose
+  curl -sL $mutagen_compose_download_url | tar xvz -C "/tmp/mutagen-compose"
+  sudo mv /tmp/mutagen-compose/mutagen-compose /usr/local/bin/mutagen-compose
+  rm -rf /tmp/mutagen-compose
+fi
+
+if [[ ! -x "$(command -v mutagen)" ]]; then
+  echo "mutagen is required"
+  exit 1
+fi
+
+if [[ ! -x "$(command -v mutagen-compose)" ]]; then
+  echo "mutagen-compose is required"
+  exit 1
+fi
+echo "mutagen installed @ $(command -v mutagen)"
+echo "mutagen-compose installed @ $(command -v mutagen-compose)"
+mutagen-compose version
+
+code="code"
+if [[ ! -x "$(command -v $code)" ]]; then
+  code="/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"
+  if [[ ! -f $code ]]; then
+    echo "WARNING: vscode cli (aka `code`) was not found."
+    echo "You may need to install the remote-containers extension manually."
+    echo "See extension documentation at https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers"
+  fi
+fi
+
+if [[ -x $(command -v "$code") ]]; then
+  $code --install-extension "ms-vscode-remote.remote-containers"
+fi
